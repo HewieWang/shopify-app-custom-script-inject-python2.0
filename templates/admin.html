@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopify App Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold mb-4">Shopify App Admin</h1>
+        
+        <form action="/add_resource" method="post" class="mb-6">
+            <div class="mb-4">
+                <label for="resource_type" class="block text-gray-700">Resource Type</label>
+                <select id="resource_type" name="resource_type" class="form-select mt-1 block w-full">
+                    <option value="js">JavaScript</option>
+                    <option value="css">CSS</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="resource_content" class="block text-gray-700">Resource Content</label>
+                <textarea id="resource_content" name="resource_content" rows="4" class="form-textarea mt-1 block w-full"></textarea>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Add Resource</button>
+        </form>
+
+        <form action="/toggle_js" method="post" class="mb-6">
+            <div class="flex items-center mb-4">
+                <input id="toggle_js" name="toggle_js" type="checkbox" class="form-checkbox" {{ 'checked' if js_injection_enabled else '' }}>
+                <label for="toggle_js" class="ml-2 text-gray-700">Enable JavaScript Injection</label>
+            </div>
+            <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded">Save Settings</button>
+        </form>
+
+        <h2 class="text-xl font-semibold mb-4">Existing Resources</h2>
+        <ul class="list-disc pl-5">
+            {% for resource in resources %}
+                <li class="mb-2">
+                    <div>
+                        <strong>ID:</strong> {{ resource.id }}
+                    </div>
+                    <div>
+                        <strong>Type:</strong> {{ resource.type }}
+                    </div>
+                    <div>
+                        <strong>Content:</strong> <pre>{{ resource.content }}</pre>
+                    </div>
+                    <form action="/remove_resource" method="post" class="mt-2">
+                        <input type="hidden" name="resource_id" value="{{ resource.id }}">
+                        <button type="submit" class="bg-red-500 text-white py-1 px-3 rounded">Remove</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
