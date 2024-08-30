@@ -1,0 +1,1 @@
+# shopify-app-custom-script-inject-python2.0
